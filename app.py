@@ -179,14 +179,14 @@ def run_asi_needs_triage():
         print("\nPlease enter valid numbers between 0 and 10.\n")
         return
 
-    scores = {
+        scores = {
         "Psychiatric / Mood Stabilization (Tool 5, 7, 11, or 12)": anxiety_mood,
-        "Substance Recovery & Medical MAT Check (Tool 6, 7, or 13)": substance
-       
-"Aggression & Impulse Control (Tool 4, 6, 11, or 12)": aggression,
-"Våga Välja / Criminal Lifestyle & Gambling Reframing (Tool 6 or 12)": antisocial,
-"Community Services & Vocational Bridge (Tool 9 or 10)": daily_life,
-}
+        "Substance Recovery & Medical MAT Check (Tool 6, 7, or 13)": substance,
+        "Aggression & Impulse Control (Tool 4, 6, 11, or 12)": aggression,
+        "Våga Välja / Criminal Lifestyle & Gambling Reframing (Tool 6 or 12)": antisocial,
+        "Community Services & Vocational Bridge (Tool 9 or 10)": daily_life,
+    }
+
 top_area = max(scores, key=scores.get)
 top_score = scores[top_area]
 print("\n--- Your Ephemeral Session Roadmap ---")
