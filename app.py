@@ -207,26 +207,30 @@ def run_asi_needs_triage():
     print("\n[Triage scores wiped from RAM.]\n")
 
 def run_box_breathing(cycles: int = 4):
-phases = [
-("Breathe IN slowly through your nose", 4),
-("HOLD your breath gently            ", 4),
-("Breathe OUT slowly through mouth   ", 4),
-("HOLD empty before next breath      ", 4),
-]
-print(f"\n--- Box Breathing ({cycles} Cycles | 4-4-4-4 Nervous System Reset) ---")
-print("Steady your heart rate before making any decisions. Press Ctrl+C to stop.\n")
-try:
-for cycle in range(1, cycles + 1):
-for label, duration in phases:
-for second in range(1, duration + 1):
-bar = "█" * second + "░" * (duration - second)
-print(
-f"\rCycle {cycle}/{cycles} | {label} [{bar}] {second}/{duration}s",
-end="",
-flush=True,
-)
-time.sleep(1)
-print("\n\nSession complete. Notice your shoulders, jaw, and breathing pace.\n")
+    phases = [
+        ("Breathe IN slowly through your nose", 4),
+        ("HOLD your breath gently            ", 4),
+        ("Breathe OUT slowly through mouth   ", 4),
+        ("HOLD empty before next breath      ", 4),
+    ]
+    print(f"\n--- Box Breathing ({cycles} Cycles | 4-4-4-4 Nervous System Reset) ---")
+    print("Steady your heart rate before making any decisions. Press Ctrl+C to stop.\n")
+
+    try:
+        for cycle in range(1, cycles + 1):
+            for label, duration in phases:
+                for second in range(1, duration + 1):
+                    bar = "█" * second + "░" * (duration - second)
+                    print(
+                        f"\rCycle {cycle}/{cycles} | {label} [{bar}] {second}/{duration}s",
+                        end="",
+                        flush=True,
+                    )
+                    time.sleep(1)
+        print("\n\nSession complete. Notice your shoulders, jaw, and breathing pace.\n")
+    except KeyboardInterrupt:
+        print("\n\n[Box breathing stopped early.]\n")
+
 except KeyboardInterrupt:
 print("\n\n[Box breathing stopped early.]\n")
 def run_urge_surfing(seconds: int = 60):
