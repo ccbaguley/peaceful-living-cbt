@@ -189,23 +189,21 @@ def run_asi_needs_triage():
 
 top_area = max(scores, key=scores.get)
 top_score = scores[top_area]
-print("\n--- Your Ephemeral Session Roadmap ---")
-if top_score == 0:
-print("All areas are steady. Recommended focus: Tool 8 (Normalization) or Tool 11 (Meditation).")
-else:
-print(f"Primary Focus Today ({top_score}/10): {top_area}")
-if substance >= 7:
-print("• Medical Note: For severe opioid/alcohol cravings, evidence-based medications (MAT)")
-print("  like buprenorphine, methadone, or naltrexone reduce relapse and overdose risk.")
-if anxiety_mood >= 8:
-print("• Psychiatric Note: High distress detected. Start with Tool 3 (Box Breathing) or Tool 11")
-print("  (Guided Meditation) and use Tool 10 (Norway Import Bridge) for clinic intake.")
-if aggression >= 6 or antisocial >= 6:
-print("• Behavioral Note: Run Tool 4 (Urge Surfing) or Tool 12 (Emotional Balance),")
-print("  then lock onto a constructive task with Tool 9 (Productive Focus-Shift).")
-scores.clear()
-gc.collect()
-print("\n[Triage scores wiped from RAM.]\n")
+    print("\n--- Your Ephemeral Session Roadmap ---")
+    if top_score == 0:
+        print("All areas are steady. Recommended focus: Tool 8 (Normalization) or Tool 11 (Meditation).")
+    else:
+        print(f"Primary Focus Today ({top_score}/10): {top_area}")
+        if substance >= 7:
+            print("• Medical Note: For severe opioid/alcohol cravings, evidence-based medications (MAT)")
+            print("  like buprenorphine, methadone, or naltrexone reduce relapse and overdose risk.")
+        if anxiety_mood >= 8:
+            print("• Psychiatric Note: High distress detected. Start with Tool 3 (Box Breathing) or Tool 11")
+            print("  (Guided Meditation) and use Tool 10 (Norway Import Bridge) for clinic intake.")
+        if aggression >= 6 or antisocial >= 6:
+            print("• Behavioral Note: Run Tool 4 (Urge Surfing) or Tool 12 (Emotional Balance),")
+            print("  then lock onto a constructive task with Tool 9 (Productive Focus-Shift).")
+
 
 --- TOOL 3: BOX BREATHING ---
 
