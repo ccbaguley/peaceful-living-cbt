@@ -11,7 +11,6 @@ import urllib.request
 MODEL_NAME = os.environ.get("OLLAMA_MODEL", "llama3.1")
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434/api/chat")
 
-# Unified Persona: Swedish Kriminalvårdare + Norwegian Import Model + Dutch Restorative + Balanced Mindful Discipline
 SYSTEM_PROMPT = """
 You are a calm, respectful peaceful-living and Cognitive Behavioral Therapy (CBT) mentor 
 modeled on the Swedish Kriminalvården 'personal officer' (kriminalvårdare) philosophy, 
@@ -182,7 +181,8 @@ def run_asi_needs_triage():
         "Psychiatric / Mood Stabilization (Tool 5, 7, 11, or 12)": anxiety_mood,
         "Substance Recovery & Medical MAT Check (Tool 6, 7, or 13)": substance,
         "Aggression & Impulse Control (Tool 4, 6, 11, or 12)": aggression,
-"Våga Välja / Criminal Lifestyle & Gambling Reframing (Tool 6 or 12)": antisocial,
+        "Våga Välja / Criminal Lifestyle & Gambling Reframing (Tool 6 or 12)": antisocial,
+
 "Community Services & Vocational Bridge (Tool 9 or 10)": daily_life,
 }
 top_area = max(scores, key=scores.get)
@@ -309,162 +309,204 @@ print("\nWorking through behavioral track offline...\n")
 print(ask_local_ai([{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}]))
 clear_session_dict(data)
 print("\n[Behavioral track data wiped from RAM.]\n")
+
+```python
 def run_integrated_checkin():
-print("\n--- Integrated Dual-Diagnosis, Medical & Vocational Check-In ---")
-print("Addresses overlapping mood, cravings, physical health, and work/routine stress.\n")
-data = {
-"mood": input("1. Psychiatric/Mood State (panic, low mood, racing thoughts): ").strip(),
-"craving": input("2. Substance/Behavioral Craving (0-10 scale + trigger): ").strip(),
-"medical": input("3. Physical/Medical Factors (sleep, missed meds, withdrawal signs?): ").strip(),
-"vocational": input("4. Work/Daily Structure Stress (job search, conflict, isolation?): ").strip(),
-}
-check_external_care_boundary(" ".join(data.values()))
-data["prompt"] = f"""
-Provide a concise, non-judgmental 4-part response modeled on
-Scandinavian/Dutch Integrated Dual Disorder Treatment (IDDT) and IPS vocational support:
-- Mood/Psychiatric State: {data['mood']}
-- Substance/Behavioral Craving: {data['craving']}
-- Physical/Medical Factors: {data['medical']}
-- Vocational/Routine Context: {data['vocational']}
-Include:
-1. Overlap Connection: How these factors may be reinforcing each other right now.
-2. CBT & Craving Tool: One concrete cognitive or behavioral step.
-3. Medical & Safety Reminder: Evidence-based medical guidance (e.g., supervised detox, MAT, medication adherence).
-4. Vocational / Routine Micro-Step: One small, dignity-building daily or work action today.
-"""
-print("\nSynthesizing whole-person support plan offline...\n")
-print(ask_local_ai([{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}]))
-clear_session_dict(data)
-print("\n[Integrated Check-In wiped from RAM.]\n")
+    print("\n--- Integrated Dual-Diagnosis, Medical & Vocational Check-In ---")
+    print("Addresses overlapping mood, cravings, physical health, and work/routine stress.\n")
+
+    data = {
+        "mood": input("1. Psychiatric/Mood State (panic, low mood, racing thoughts): ").strip(),
+        "craving": input("2. Substance/Behavioral Craving (0-10 scale + trigger): ").strip(),
+        "medical": input("3. Physical/Medical Factors (sleep, missed meds, withdrawal signs?): ").strip(),
+        "vocational": input("4. Work/Daily Structure Stress (job search, conflict, isolation?): ").strip(),
+    }
+
+    check_external_care_boundary(" ".join(data.values()))
+
+    data["prompt"] = f"""
+    Provide a concise, non-judgmental 4-part response modeled on 
+    Scandinavian/Dutch Integrated Dual Disorder Treatment (IDDT) and IPS vocational support:
+    - Mood/Psychiatric State: {data['mood']}
+    - Substance/Behavioral Craving: {data['craving']}
+    - Physical/Medical Factors: {data['medical']}
+    - Vocational/Routine Context: {data['vocational']}
+
+    Include:
+    1. **Overlap Connection**: How these factors may be reinforcing each other right now.
+    2. **CBT & Craving Tool**: One concrete cognitive or behavioral step.
+    3. **Medical & Safety Reminder**: Evidence-based medical guidance (e.g., supervised detox, MAT, medication adherence).
+    4. **Vocational / Routine Micro-Step**: One small, dignity-building daily or work action today.
+    """
+    print("\nSynthesizing whole-person support plan offline...\n")
+    print(ask_local_ai([{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}]))
+
+    clear_session_dict(data)
+    print("\n[Integrated Check-In wiped from RAM.]\n")
+
+
 def run_personal_officer_checkin():
-print("\n--- 'Personal Officer' (Kriminalvårdare) Normalization Check-In ---")
-print("No judgment, no surveillance—just steady, everyday mentorship.\n")
-data = {
-"basics": input("1. Basics today (sleep, food, hygiene, medication taken?): ").strip(),
-"win": input("2. One small thing you handled calmly or stayed away from today: ").strip(),
-"next_24h": input("3. One ordinary, constructive task for the next 24 hours: ").strip(),
-}
-check_external_care_boundary(" ".join(data.values()))
-data["prompt"] = f"""
-Act as a Swedish personal officer (kriminalvårdare) doing an everyday normalization check-in.
-- Daily Basics: {data['basics']}
-- Small Win / Restraint Shown: {data['win']}
-- Next 24-Hour Plan: {data['next_24h']}
-Provide a brief, warm, grounded response that:
-1. Validates their everyday routine and self-restraint as real progress.
-2. Uses Motivational Interviewing to reinforce their autonomy and dignity.
-3. Keeps the plan simple and achievable.
-"""
-print("\nConnecting with mentor guide offline...\n")
-print(ask_local_ai([{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}]))
-clear_session_dict(data)
-print("\n[Normalization check-in wiped from RAM.]\n")
+    print("\n--- 'Personal Officer' (Kriminalvårdare) Normalization Check-In ---")
+    print("No judgment, no surveillance—just steady, everyday mentorship.\n")
+
+    data = {
+        "basics": input("1. Basics today (sleep, food, hygiene, medication taken?): ").strip(),
+        "win": input("2. One small thing you handled calmly or stayed away from today: ").strip(),
+        "next_24h": input("3. One ordinary, constructive task for the next 24 hours: ").strip(),
+    }
+
+    check_external_care_boundary(" ".join(data.values()))
+
+    data["prompt"] = f"""
+    Act as a Swedish personal officer (kriminalvårdare) doing an everyday normalization check-in.
+    - Daily Basics: {data['basics']}
+    - Small Win / Restraint Shown: {data['win']}
+    - Next 24-Hour Plan: {data['next_24h']}
+
+    Provide a brief, warm, grounded response that:
+    1. Validates their everyday routine and self-restraint as real progress.
+    2. Uses Motivational Interviewing to reinforce their autonomy and dignity.
+    3. Keeps the plan simple and achievable.
+    """
+    print("\nConnecting with mentor guide offline...\n")
+    print(ask_local_ai([{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}]))
+
+    clear_session_dict(data)
+    print("\n[Normalization check-in wiped from RAM.]\n")
+
+
 def run_focus_sprint(minutes: int = 10):
-total_seconds = minutes * 60
-print(f"\n--- {minutes}-Minute Deep Focus Sprint ---")
-print("Keep your attention strictly on the task in front of you. Press Ctrl+C to finish early.\n")
-try:
-for remaining in range(total_seconds, 0, -1):
-mins, secs = divmod(remaining, 60)
-print(f"\rTime remaining: {mins:02d}:{secs:02d} | Stay engaged with your task...", end="", flush=True)
-time.sleep(1)
-print("\n\nSprint complete. Notice how shifting your attention changed your mental state.\n")
-except KeyboardInterrupt:
-print("\n\n[Focus sprint ended early.]\n")
+    total_seconds = minutes * 60
+    print(f"\n--- {minutes}-Minute Deep Focus Sprint ---")
+    print("Keep your attention strictly on the task in front of you. Press Ctrl+C to finish early.\n")
+
+    try:
+        for remaining in range(total_seconds, 0, -1):
+            mins, secs = divmod(remaining, 60)
+            print(f"\rTime remaining: {mins:02d}:{secs:02d} | Stay engaged with your task...", end="", flush=True)
+            time.sleep(1)
+        print("\n\nSprint complete. Notice how shifting your attention changed your mental state.\n")
+    except KeyboardInterrupt:
+        print("\n\n[Focus sprint ended early.]\n")
+
+
 def run_productive_focus_shift():
-print("\n--- Productive Focus-Shift & Behavioral Activation ---")
-print("Shifting into an absorbing, constructive task occupies working memory and stops rumination.\n")
-print("What kind of focus fits your energy right now?")
-print("1. Hands-On & Physical (organizing, cleaning, movement, cooking)")
-print("2. Mental & Skill-Building (coding, reading, job prep, problem-solving)")
-print("3. Creative & Structured Planning (writing, mapping tomorrow, communication prep)")
-category = input("\nSelect a category (1-3): ").strip()
-if category not in OFFLINE_TASK_BANK:
-category = "1"
-data = {"interest": input("Optional: Any specific interest or goal right now? (or press Enter to skip): ").strip()}
-check_external_care_boundary(data["interest"])
-fallback_task = random.choice(OFFLINE_TASK_BANK[category])
-if data["interest"]:
-data["prompt"] = f"""
-Act as a supportive Scandinavian peaceful-living mentor using CBT Behavioral Activation.
-The user wants to shift their mind away from rumination, anxiety, or urges onto a productive task.
-- Category chosen: {category} (1=Physical/Hands-on, 2=Mental/Skill-building, 3=Creative/Planning)
-- User's specific interest/goal: {data['interest']}
-Suggest ONE concrete, absorbing 10-to-15-minute task they can start immediately right where they are.
-Explain in 2 short sentences why this task occupies working memory and builds real-world capability.
-"""
-print("\nFinding an absorbing task offline...\n")
-suggestion = ask_local_ai(
-[{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}],
-fallback=f"Suggested Task: {fallback_task}"
-)
-print(suggestion)
-else:
-print(f"\nSuggested Task: {fallback_task}")
-start_timer = input("\nStart a 10-minute focus sprint timer for this task now? (y/n): ").strip().lower()
-if start_timer == "y":
-run_focus_sprint(minutes=10)
-clear_session_dict(data)
-print("[Focus-shift session wiped from RAM.]\n")
+    print("\n--- Productive Focus-Shift & Behavioral Activation ---")
+    print("Shifting into an absorbing, constructive task occupies working memory and stops rumination.\n")
+    print("What kind of focus fits your energy right now?")
+    print("1. Hands-On & Physical (organizing, cleaning, movement, cooking)")
+    print("2. Mental & Skill-Building (coding, reading, job prep, problem-solving)")
+    print("3. Creative & Structured Planning (writing, mapping tomorrow, communication prep)")
+
+    category = input("\nSelect a category (1-3): ").strip()
+    if category not in OFFLINE_TASK_BANK:
+        category = "1"
+
+    data = {"interest": input("Optional: Any specific interest or goal right now? (or press Enter to skip): ").strip()}
+    check_external_care_boundary(data["interest"])
+    fallback_task = random.choice(OFFLINE_TASK_BANK[category])
+
+    if data["interest"]:
+        data["prompt"] = f"""
+        Act as a supportive Scandinavian peaceful-living mentor using CBT Behavioral Activation.
+        The user wants to shift their mind away from rumination, anxiety, or urges onto a productive task.
+        - Category chosen: {category} (1=Physical/Hands-on, 2=Mental/Skill-building, 3=Creative/Planning)
+        - User's specific interest/goal: {data['interest']}
+
+        Suggest ONE concrete, absorbing 10-to-15-minute task they can start immediately right where they are.
+        Explain in 2 short sentences why this task occupies working memory and builds real-world capability.
+        """
+        print("\nFinding an absorbing task offline...\n")
+        suggestion = ask_local_ai(
+            [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}],
+            fallback=f"Suggested Task: {fallback_task}"
+        )
+        print(suggestion)
+    else:
+        print(f"\nSuggested Task: {fallback_task}")
+
+    start_timer = input("\nStart a 10-minute focus sprint timer for this task now? (y/n): ").strip().lower()
+    if start_timer == "y":
+        run_focus_sprint(minutes=10)
+
+    clear_session_dict(data)
+    print("[Focus-shift session wiped from RAM.]\n")
+
+
 def run_norway_import_bridge():
-print("\n--- Norway 'Import Model' Community & Service Bridge ---")
-print("Norway's model avoids isolated silos by bringing normal community healthcare,")
-print("employment, education, and housing services directly to the individual.")
-print("Prepare a calm, practical 'Warm Handoff' with a real-world resource.\n")
-print("Which community pillar do you want to connect with next?")
-print("1. Community Healthcare / Dual-Diagnosis / MAT Clinic")
-print("2. Employment, Vocational Rehab & Benefits Agency (NAV-style support)")
-print("3. Housing Stability & Municipal Social Services")
-print("4. Public Library, Trade School, or Free Adult Education")
-pillar_map = {
-"1": "Community Healthcare, Dual-Diagnosis Psychiatry, or MAT Clinic",
-"2": "Public Employment Center, Vocational Rehabilitation, or Benefits Caseworker",
-"3": "Housing Stability & Municipal Social Support",
-"4": "Public Library, Trade Training, or Free Community Education",
-}
-choice = input("\nSelect a community pillar (1-4): ").strip()
-pillar = pillar_map.get(choice, pillar_map["1"])
-data = {
-"barrier": input(f"\n[{pillar}]\nWhat makes reaching out or walking in feel difficult right now? ").strip(),
-"goal": input("What is the single main thing you need help with from them? ").strip(),
-}
-check_external_care_boundary(" ".join(data.values()))
-fallback_guide = (
-f"\n[Self-Guided Warm Handoff Plan — {pillar}]\n"
-f"1. Opening Script: 'Hi, I'm looking to get connected with {data['goal']}. Can you tell me what the first intake step is?'\n"
-"2. What to Bring: Photo ID (or ask how to get a replacement ID), a list of current medications, and a pen.\n"
-"3. Anxiety Buffer: You do not have to explain your whole life story at the front desk—just state your immediate goal.\n"
-)
-data["prompt"] = f"""
-Act as a Norwegian coordinator applying Norway's 'Import Model' (forvaltningssamarbeid),
-which connects individuals directly to normal municipal healthcare, labor (NAV), housing, and education.
-- Target Community Pillar: {pillar}
-- User's Social Anxiety / Practical Barrier: {data['barrier']}
-- User's Concrete Goal: {data['goal']}
-Provide a concise, dignity-centered 3-part 'Warm Handoff' preparation guide:
-1. Exact Opening Script: A calm, 2-sentence script they can say or read when calling or walking in.
-2. Practical Checklist: 3 basic items or questions to bring so the appointment goes smoothly.
-3. Social Anxiety & Dignity Reframe: Remind them that public services exist for every citizen—using them is normal self-advocacy, not failure.
-"""
-print("\nPreparing your real-world service bridge offline...\n")
-print(ask_local_ai(
-[{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}],
-fallback=fallback_guide
-))
-clear_session_dict(data)
-print("\n[Community bridge notes wiped from RAM.]\n")
+    print("\n--- Norway 'Import Model' Community & Service Bridge ---")
+    print("Norway's model avoids isolated silos by bringing normal community healthcare,")
+    print("employment, education, and housing services directly to the individual.")
+    print("Prepare a calm, practical 'Warm Handoff' with a real-world resource.\n")
+
+    print("Which community pillar do you want to connect with next?")
+    print("1. Community Healthcare / Dual-Diagnosis / MAT Clinic")
+    print("2. Employment, Vocational Rehab & Benefits Agency (NAV-style support)")
+    print("3. Housing Stability & Municipal Social Services")
+    print("4. Public Library, Trade School, or Free Adult Education")
+
+    pillar_map = {
+        "1": "Community Healthcare, Dual-Diagnosis Psychiatry, or MAT Clinic",
+        "2": "Public Employment Center, Vocational Rehabilitation, or Benefits Caseworker",
+        "3": "Housing Stability & Municipal Social Support",
+        "4": "Public Library, Trade Training, or Free Community Education",
+    }
+
+    choice = input("\nSelect a community pillar (1-4): ").strip()
+    pillar = pillar_map.get(choice, pillar_map["1"])
+
+    data = {
+        "barrier": input(f"\n[{pillar}]\nWhat makes reaching out or walking in feel difficult right now? ").strip(),
+        "goal": input("What is the single main thing you need help with from them? ").strip(),
+    }
+
+    check_external_care_boundary(" ".join(data.values()))
+
+    fallback_guide = (
+        f"\n[Self-Guided Warm Handoff Plan — {pillar}]\n"
+        f"1. Opening Script: 'Hi, I'm looking to get connected with {data['goal']}. Can you tell me what the first intake step is?'\n"
+        "2. What to Bring: Photo ID (or ask how to get a replacement ID), a list of current medications, and a pen.\n"
+        "3. Anxiety Buffer: You do not have to explain your whole life story at the front desk—just state your immediate goal.\n"
+    )
+
+    data["prompt"] = f"""
+    Act as a Norwegian coordinator applying Norway's 'Import Model' (forvaltningssamarbeid),
+    which connects individuals directly to normal municipal healthcare, labor (NAV), housing, and education.
+
+    - Target Community Pillar: {pillar}
+    - User's Social Anxiety / Practical Barrier: {data['barrier']}
+    - User's Concrete Goal: {data['goal']}
+
+    Provide a concise, dignity-centered 3-part 'Warm Handoff' preparation guide:
+    1. **Exact Opening Script**: A calm, 2-sentence script they can say or read when calling or walking in.
+    2. **Practical Checklist**: 3 basic items or questions to bring so the appointment goes smoothly.
+    3. **Social Anxiety & Dignity Reframe**: Remind them that public services exist for every citizen—using them is normal self-advocacy, not failure.
+    """
+
+    print("\nPreparing your real-world service bridge offline...\n")
+    print(ask_local_ai(
+        [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}],
+        fallback=fallback_guide
+    ))
+
+    clear_session_dict(data)
+    print("\n[Community bridge notes wiped from RAM.]\n")
+
+
 def run_guided_meditation(minutes: int = 3):
-steps = [
-(0.20, "Posture & Root: Sit upright or stand with feet flat. Drop your shoulders and unclench your jaw."),
-(0.25, "Breath Anchor: Breathe slowly into your lower belly (hara/dantian). Feel the rise and fall."),
-(0.30, "Observing Thoughts: Notice worries, anger, or urges like clouds drifting across an open sky—do not chase them."),
-(0.25, "Quiet Resolve: Rest in stillness. You do not need to react to every feeling. Return gently to the room.")
-]
-total_seconds = minutes * 60
-print(f"\n--- {minutes}-Minute Guided Stillness & Somatic Meditation ---")
-print("Follow each stage quietly. Press Ctrl+C at any time to return.\n")
-try:
-elapsed = 0
+    steps = [
+        (0.20, "Posture & Root: Sit upright or stand with feet flat. Drop your shoulders and unclench your jaw."),
+        (0.25, "Breath Anchor: Breathe slowly into your lower belly (hara/dantian). Feel the rise and fall."),
+        (0.30, "Observing Thoughts: Notice worries, anger, or urges like clouds drifting across an open sky—do not chase them."),
+        (0.25, "Quiet Resolve: Rest in stillness. You do not need to react to every feeling. Return gently to the room.")
+    ]
+
+    total_seconds = minutes * 60
+    print(f"\n--- {minutes}-Minute Guided Stillness & Somatic Meditation ---")
+    print("Follow each stage quietly. Press Ctrl+C at any time to return.\n")
+
+    try:
+     elapsed = 0
 for ratio, instruction in steps:
 stage_seconds = max(1, int(total_seconds * ratio))
 print(f"\n• {instruction}")
@@ -670,4 +712,4 @@ else:
 print("\nPlease enter a number between 1 and 14.\n")
 if name == "main":
 app = PeacefulLivingApp()
-app.main_menu()
+app.main_menu()  
