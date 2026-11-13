@@ -187,9 +187,9 @@ def run_asi_needs_triage():
 top_area = max(scores, key=scores.get)
 top_score = scores[top_area]
 print("\n--- Your Ephemeral Session Roadmap ---")
-if top_score == 0:
-print("All areas are steady. Recommended focus: Tool 8 (Normalization) or Tool 11 (Meditation).")
-else:
+    if top_score == 0:
+        print("All areas are steady. Recommended focus: Tool 8 (Normalization) or Tool 11 (Meditation).")
+    else:
 print(f"Primary Focus Today ({top_score}/10): {top_area}")
 if substance >= 7:
 print("• Medical Note: For severe opioid/alcohol cravings, evidence-based medications (MAT)")
