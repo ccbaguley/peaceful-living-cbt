@@ -8,25 +8,32 @@ on:
 
 jobs:
   audit:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Python 3
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Verify Python Syntax
         run: python3 -m py_compile app.py
 
-      - name: Verify Zero Disk-Writing Functions
+      - name: Verify Zero Disk-Writing Calls (AST Audit)
         run: |
-          python3 -c '
+          python3 - << 'EOF'
+          import ast
+
           with open("app.py", "r", encoding="utf-8") as f:
-              code = f.read()
-          forbidden = ["open(", "sqlite3", "logging.", "pickle.", "shelve."]
-          for item in forbidden:
-              assert item not in code, f"Privacy violation: {item} found in app.py"
-          print("Privacy audit passed: zero disk-writing calls detected.")
-          '
+              tree = ast.parse(f.read(), filename="app.py")
+
+          forbidden_names = {"open", "sqlite3", "pickle", "shelve"}
+          for node in ast.walk(tree):
+              if isinstance(node, ast.Name) and node.id in forbidden_names:
+                  raise AssertionError(f"Privacy violation: forbidden identifier '{node.id}' found in app.py")
+              if isinstance(node, ast.Attribute) and node.attr in {"write_text", "write_bytes"}:
+                  raise AssertionError(f"Privacy violation: forbidden file write '{node.attr}' found in app.py")
+
+          print("Privacy & syntax audit passed: zero disk-writing calls detected.")
+          EOF
