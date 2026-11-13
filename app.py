@@ -182,7 +182,7 @@ def run_asi_needs_triage():
     scores = {
         "Psychiatric / Mood Stabilization (Tool 5, 7, 11, or 12)": anxiety_mood,
         "Substance Recovery & Medical MAT Check (Tool 6, 7, or 13)": substance,
-
+Use code with caution.
 "Aggression & Impulse Control (Tool 4, 6, 11, or 12)": aggression,
 "Våga Välja / Criminal Lifestyle & Gambling Reframing (Tool 6 or 12)": antisocial,
 "Community Services & Vocational Bridge (Tool 9 or 10)": daily_life,
