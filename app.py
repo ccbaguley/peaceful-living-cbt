@@ -11,6 +11,7 @@ import urllib.request
 MODEL_NAME = os.environ.get("OLLAMA_MODEL", "llama3.1")
 OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434/api/chat")
 
+# Unified Persona: Swedish Kriminalvårdare + Norwegian Import Model + Dutch Restorative + Balanced Mindful Discipline
 SYSTEM_PROMPT = """
 You are a calm, respectful peaceful-living and Cognitive Behavioral Therapy (CBT) mentor 
 modeled on the Swedish Kriminalvården 'personal officer' (kriminalvårdare) philosophy, 
@@ -181,56 +182,49 @@ def run_asi_needs_triage():
         "Psychiatric / Mood Stabilization (Tool 5, 7, 11, or 12)": anxiety_mood,
         "Substance Recovery & Medical MAT Check (Tool 6, 7, or 13)": substance,
         "Aggression & Impulse Control (Tool 4, 6, 11, or 12)": aggression,
-        "Våga Välja / Criminal Lifestyle & Gambling Reframing (Tool 6 or 12)": antisocial,
+"Våga Välja / Criminal Lifestyle & Gambling Reframing (Tool 6 or 12)": antisocial,
 "Community Services & Vocational Bridge (Tool 9 or 10)": daily_life,
 }
-    top_area = max(scores, key=scores.get)
-    top_score = scores[top_area]
-
-    print("\n--- Your Ephemeral Session Roadmap ---")
-    if top_score == 0:
-        print("All areas are steady. Recommended focus: Tool 8 (Normalization) or Tool 11 (Meditation).")
-    else:
-        print(f"Primary Focus Today ({top_score}/10): {top_area}")
-        if substance >= 7:
-            print("• Medical Note: For severe opioid/alcohol cravings, evidence-based medications (MAT)")
-            print("  like buprenorphine, methadone, or naltrexone reduce relapse and overdose risk.")
-        if anxiety_mood >= 8:
-            print("• Psychiatric Note: High distress detected. Start with Tool 3 (Box Breathing) or Tool 11")
-            print("  (Guided Meditation) and use Tool 10 (Norway Import Bridge) for clinic intake.")
-        if aggression >= 6 or antisocial >= 6:
-            print("• Behavioral Note: Run Tool 4 (Urge Surfing) or Tool 12 (Emotional Balance),")
-            print("  then lock onto a constructive task with Tool 9 (Productive Focus-Shift).")
-
-    scores.clear()
-    gc.collect()
-    print("\n[Triage scores wiped from RAM.]\n")
-
+top_area = max(scores, key=scores.get)
+top_score = scores[top_area]
+print("\n--- Your Ephemeral Session Roadmap ---")
+if top_score == 0:
+print("All areas are steady. Recommended focus: Tool 8 (Normalization) or Tool 11 (Meditation).")
+else:
+print(f"Primary Focus Today ({top_score}/10): {top_area}")
+if substance >= 7:
+print("• Medical Note: For severe opioid/alcohol cravings, evidence-based medications (MAT)")
+print("  like buprenorphine, methadone, or naltrexone reduce relapse and overdose risk.")
+if anxiety_mood >= 8:
+print("• Psychiatric Note: High distress detected. Start with Tool 3 (Box Breathing) or Tool 11")
+print("  (Guided Meditation) and use Tool 10 (Norway Import Bridge) for clinic intake.")
+if aggression >= 6 or antisocial >= 6:
+print("• Behavioral Note: Run Tool 4 (Urge Surfing) or Tool 12 (Emotional Balance),")
+print("  then lock onto a constructive task with Tool 9 (Productive Focus-Shift).")
+scores.clear()
+gc.collect()
+print("\n[Triage scores wiped from RAM.]\n")
 def run_box_breathing(cycles: int = 4):
-    phases = [
-        ("Breathe IN slowly through your nose", 4),
-        ("HOLD your breath gently            ", 4),
-        ("Breathe OUT slowly through mouth   ", 4),
-        ("HOLD empty before next breath      ", 4),
-    ]
-    print(f"\n--- Box Breathing ({cycles} Cycles | 4-4-4-4 Nervous System Reset) ---")
-    print("Steady your heart rate before making any decisions. Press Ctrl+C to stop.\n")
-
-    try:
-        for cycle in range(1, cycles + 1):
-            for label, duration in phases:
-                for second in range(1, duration + 1):
-                    bar = "█" * second + "░" * (duration - second)
-                    print(
-                        f"\rCycle {cycle}/{cycles} | {label} [{bar}] {second}/{duration}s",
-                        end="",
-                        flush=True,
-                    )
-                    time.sleep(1)
-        print("\n\nSession complete. Notice your shoulders, jaw, and breathing pace.\n")
-    except KeyboardInterrupt:
-        print("\n\n[Box breathing stopped early.]\n")
-
+phases = [
+("Breathe IN slowly through your nose", 4),
+("HOLD your breath gently            ", 4),
+("Breathe OUT slowly through mouth   ", 4),
+("HOLD empty before next breath      ", 4),
+]
+print(f"\n--- Box Breathing ({cycles} Cycles | 4-4-4-4 Nervous System Reset) ---")
+print("Steady your heart rate before making any decisions. Press Ctrl+C to stop.\n")
+try:
+for cycle in range(1, cycles + 1):
+for label, duration in phases:
+for second in range(1, duration + 1):
+bar = "█" * second + "░" * (duration - second)
+print(
+f"\rCycle {cycle}/{cycles} | {label} [{bar}] {second}/{duration}s",
+end="",
+flush=True,
+)
+time.sleep(1)
+print("\n\nSession complete. Notice your shoulders, jaw, and breathing pace.\n")
 except KeyboardInterrupt:
 print("\n\n[Box breathing stopped early.]\n")
 def run_urge_surfing(seconds: int = 60):
@@ -250,217 +244,171 @@ time.sleep(1)
 print("\n\nWave complete. Notice if the intensity dropped even by 1 point.\n")
 except KeyboardInterrupt:
 print("\n\n[Timer stopped early.]\n")
----
-
-### Part 2 (Bottom Half — Copy & Paste Right Below Part 1)
-
-```python
 def run_thought_record():
-    print("\n--- 5-Step CBT Thought Record (Anxiety & Trigger Reframing) ---")
-    print("Nothing you type is saved to disk.\n")
-
-    data = {
-        "situation": input("1. Situation (Objective facts only): ").strip(),
-        "emotion": input("2. Emotion & Intensity (e.g., Social Anxiety 7/10, Anger 8/10): ").strip(),
-        "auto_thought": input("3. Automatic Thought (What went through your mind?): ").strip(),
-        "evidence_for": input("4. Evidence FOR this thought (Facts only): ").strip(),
-        "evidence_against": input("5. Evidence AGAINST this thought (Other explanations?): ").strip(),
-    }
-
-    check_external_care_boundary(" ".join(data.values()))
-
-    data["prompt"] = f"""
-    Review this CBT Thought Record using a calm, non-judgmental Scandinavian restorative tone:
-    - Situation: {data['situation']}
-    - Emotion: {data['emotion']}
-    - Automatic Thought: {data['auto_thought']}
-    - Evidence For: {data['evidence_for']}
-    - Evidence Against: {data['evidence_against']}
-
-    Provide:
-    1. One cognitive distortion possibly at play (e.g., mind reading, catastrophizing, hostile attribution).
-    2. A balanced, realistic alternative thought.
-    3. One grounded, constructive action right now.
-    """
-    print("\nAnalyzing thought pattern offline...\n")
-    print(ask_local_ai([{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}]))
-
-    clear_session_dict(data)
-    print("\n[Thought Record wiped from RAM.]\n")
-
-
+print("\n--- 5-Step CBT Thought Record (Anxiety & Trigger Reframing) ---")
+print("Nothing you type is saved to disk.\n")
+data = {
+"situation": input("1. Situation (Objective facts only): ").strip(),
+"emotion": input("2. Emotion & Intensity (e.g., Social Anxiety 7/10, Anger 8/10): ").strip(),
+"auto_thought": input("3. Automatic Thought (What went through your mind?): ").strip(),
+"evidence_for": input("4. Evidence FOR this thought (Facts only): ").strip(),
+"evidence_against": input("5. Evidence AGAINST this thought (Other explanations?): ").strip(),
+}
+check_external_care_boundary(" ".join(data.values()))
+data["prompt"] = f"""
+Review this CBT Thought Record using a calm, non-judgmental Scandinavian restorative tone:
+- Situation: {data['situation']}
+- Emotion: {data['emotion']}
+- Automatic Thought: {data['auto_thought']}
+- Evidence For: {data['evidence_for']}
+- Evidence Against: {data['evidence_against']}
+Provide:
+1. One cognitive distortion possibly at play (e.g., mind reading, catastrophizing, hostile attribution).
+2. A balanced, realistic alternative thought.
+3. One grounded, constructive action right now.
+"""
+print("\nAnalyzing thought pattern offline...\n")
+print(ask_local_ai([{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}]))
+clear_session_dict(data)
+print("\n[Thought Record wiped from RAM.]\n")
 def run_specialized_cbt_track():
-    print("\n--- Specialized CBT Behavioral Tracks (One-to-One / Våga Välja) ---")
-    print("Select the specific pattern you want to interrupt right now:")
-    print("1. Impulse Control & Problem-Solving (One-to-One style)")
-    print("2. Aggression & Hostile Attribution (De-escalation)")
-    print("3. Addiction & Criminal Lifestyle Triggers (Våga Välja / Dare to Choose)")
-    print("4. Severe Gambling or Compulsive Risk Urges")
-    print("5. Social Anxiety & Community Re-Integration Avoidance")
-
-    track_map = {
-        "1": "Impulse Control and Problem-Solving (One-to-One)",
-        "2": "Aggression and Hostile Attribution De-escalation",
-        "3": "Substance Addiction and Criminal Lifestyle Triggers (Våga Välja)",
-        "4": "Gambling and Compulsive Risk-Taking",
-        "5": "Social Anxiety and Community Re-Integration",
-    }
-
-    choice = input("\nChoose track (1-5): ").strip()
-    track_name = track_map.get(choice)
-    if not track_name:
-        print("Invalid selection.\n")
-        return
-
-    data = {
-        "trigger": input(f"\n[{track_name}]\nWhat situation or thought is pulling you toward an old reaction? ").strip(),
-        "consequence": input("If you act on that impulse, what happens 24 hours from now? ").strip(),
-    }
-
-    check_external_care_boundary(" ".join(data.values()))
-
-    data["prompt"] = f"""
-    Facilitate a brief, structured CBT & Motivational Interviewing exercise for: {track_name}.
-    - User's Current Trigger: {data['trigger']}
-    - User's 24-Hour Consequence Reflection: {data['consequence']}
-
-    Respond as a Swedish kriminalvårdare (supportive mentor):
-    1. Reflect back their own awareness of the 24-hour consequence without lecturing.
-    2. Identify the specific "permission-giving thought" or cognitive trap trying to justify the behavior.
-    3. Offer two realistic, self-respecting alternative choices for the next hour.
-    """
-    print("\nWorking through behavioral track offline...\n")
-    print(ask_local_ai([{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}]))
-
-    clear_session_dict(data)
-    print("\n[Behavioral track data wiped from RAM.]\n")
-
-
+print("\n--- Specialized CBT Behavioral Tracks (One-to-One / Våga Välja) ---")
+print("Select the specific pattern you want to interrupt right now:")
+print("1. Impulse Control & Problem-Solving (One-to-One style)")
+print("2. Aggression & Hostile Attribution (De-escalation)")
+print("3. Addiction & Criminal Lifestyle Triggers (Våga Välja / Dare to Choose)")
+print("4. Severe Gambling or Compulsive Risk Urges")
+print("5. Social Anxiety & Community Re-Integration Avoidance")
+track_map = {
+"1": "Impulse Control and Problem-Solving (One-to-One)",
+"2": "Aggression and Hostile Attribution De-escalation",
+"3": "Substance Addiction and Criminal Lifestyle Triggers (Våga Välja)",
+"4": "Gambling and Compulsive Risk-Taking",
+"5": "Social Anxiety and Community Re-Integration",
+}
+choice = input("\nChoose track (1-5): ").strip()
+track_name = track_map.get(choice)
+if not track_name:
+print("Invalid selection.\n")
+return
+data = {
+"trigger": input(f"\n[{track_name}]\nWhat situation or thought is pulling you toward an old reaction? ").strip(),
+"consequence": input("If you act on that impulse, what happens 24 hours from now? ").strip(),
+}
+check_external_care_boundary(" ".join(data.values()))
+data["prompt"] = f"""
+Facilitate a brief, structured CBT & Motivational Interviewing exercise for: {track_name}.
+- User's Current Trigger: {data['trigger']}
+- User's 24-Hour Consequence Reflection: {data['consequence']}
+Respond as a Swedish kriminalvårdare (supportive mentor):
+1. Reflect back their own awareness of the 24-hour consequence without lecturing.
+2. Identify the specific "permission-giving thought" or cognitive trap trying to justify the behavior.
+3. Offer two realistic, self-respecting alternative choices for the next hour.
+"""
+print("\nWorking through behavioral track offline...\n")
+print(ask_local_ai([{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}]))
+clear_session_dict(data)
+print("\n[Behavioral track data wiped from RAM.]\n")
 def run_integrated_checkin():
-    print("\n--- Integrated Dual-Diagnosis, Medical & Vocational Check-In ---")
-    print("Addresses overlapping mood, cravings, physical health, and work/routine stress.\n")
-
-    data = {
-        "mood": input("1. Psychiatric/Mood State (panic, low mood, racing thoughts): ").strip(),
-        "craving": input("2. Substance/Behavioral Craving (0-10 scale + trigger): ").strip(),
-        "medical": input("3. Physical/Medical Factors (sleep, missed meds, withdrawal signs?): ").strip(),
-        "vocational": input("4. Work/Daily Structure Stress (job search, conflict, isolation?): ").strip(),
-    }
-
-    check_external_care_boundary(" ".join(data.values()))
-
-    data["prompt"] = f"""
-    Provide a concise, non-judgmental 4-part response modeled on 
-    Scandinavian/Dutch Integrated Dual Disorder Treatment (IDDT) and IPS vocational support:
-    - Mood/Psychiatric State: {data['mood']}
-    - Substance/Behavioral Craving: {data['craving']}
-    - Physical/Medical Factors: {data['medical']}
-    - Vocational/Routine Context: {data['vocational']}
-
-    Include:
-    1. **Overlap Connection**: How these factors may be reinforcing each other right now.
-    2. **CBT & Craving Tool**: One concrete cognitive or behavioral step.
-    3. **Medical & Safety Reminder**: Evidence-based medical guidance (e.g., supervised detox, MAT, medication adherence).
-    4. **Vocational / Routine Micro-Step**: One small, dignity-building daily or work action today.
-    """
-    print("\nSynthesizing whole-person support plan offline...\n")
-    print(ask_local_ai([{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}]))
-
-    clear_session_dict(data)
-    print("\n[Integrated Check-In wiped from RAM.]\n")
-
-
+print("\n--- Integrated Dual-Diagnosis, Medical & Vocational Check-In ---")
+print("Addresses overlapping mood, cravings, physical health, and work/routine stress.\n")
+data = {
+"mood": input("1. Psychiatric/Mood State (panic, low mood, racing thoughts): ").strip(),
+"craving": input("2. Substance/Behavioral Craving (0-10 scale + trigger): ").strip(),
+"medical": input("3. Physical/Medical Factors (sleep, missed meds, withdrawal signs?): ").strip(),
+"vocational": input("4. Work/Daily Structure Stress (job search, conflict, isolation?): ").strip(),
+}
+check_external_care_boundary(" ".join(data.values()))
+data["prompt"] = f"""
+Provide a concise, non-judgmental 4-part response modeled on
+Scandinavian/Dutch Integrated Dual Disorder Treatment (IDDT) and IPS vocational support:
+- Mood/Psychiatric State: {data['mood']}
+- Substance/Behavioral Craving: {data['craving']}
+- Physical/Medical Factors: {data['medical']}
+- Vocational/Routine Context: {data['vocational']}
+Include:
+1. Overlap Connection: How these factors may be reinforcing each other right now.
+2. CBT & Craving Tool: One concrete cognitive or behavioral step.
+3. Medical & Safety Reminder: Evidence-based medical guidance (e.g., supervised detox, MAT, medication adherence).
+4. Vocational / Routine Micro-Step: One small, dignity-building daily or work action today.
+"""
+print("\nSynthesizing whole-person support plan offline...\n")
+print(ask_local_ai([{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}]))
+clear_session_dict(data)
+print("\n[Integrated Check-In wiped from RAM.]\n")
 def run_personal_officer_checkin():
-    print("\n--- 'Personal Officer' (Kriminalvårdare) Normalization Check-In ---")
-    print("No judgment, no surveillance—just steady, everyday mentorship.\n")
-
-    data = {
-        "basics": input("1. Basics today (sleep, food, hygiene, medication taken?): ").strip(),
-        "win": input("2. One small thing you handled calmly or stayed away from today: ").strip(),
-        "next_24h": input("3. One ordinary, constructive task for the next 24 hours: ").strip(),
-    }
-
-    check_external_care_boundary(" ".join(data.values()))
-
-    data["prompt"] = f"""
-    Act as a Swedish personal officer (kriminalvårdare) doing an everyday normalization check-in.
-    - Daily Basics: {data['basics']}
-    - Small Win / Restraint Shown: {data['win']}
-    - Next 24-Hour Plan: {data['next_24h']}
-
-    Provide a brief, warm, grounded response that:
-    1. Validates their everyday routine and self-restraint as real progress.
-    2. Uses Motivational Interviewing to reinforce their autonomy and dignity.
-    3. Keeps the plan simple and achievable.
-    """
-    print("\nConnecting with mentor guide offline...\n")
-    print(ask_local_ai([{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}]))
-
-    clear_session_dict(data)
-    print("\n[Normalization check-in wiped from RAM.]\n")
-
-
+print("\n--- 'Personal Officer' (Kriminalvårdare) Normalization Check-In ---")
+print("No judgment, no surveillance—just steady, everyday mentorship.\n")
+data = {
+"basics": input("1. Basics today (sleep, food, hygiene, medication taken?): ").strip(),
+"win": input("2. One small thing you handled calmly or stayed away from today: ").strip(),
+"next_24h": input("3. One ordinary, constructive task for the next 24 hours: ").strip(),
+}
+check_external_care_boundary(" ".join(data.values()))
+data["prompt"] = f"""
+Act as a Swedish personal officer (kriminalvårdare) doing an everyday normalization check-in.
+- Daily Basics: {data['basics']}
+- Small Win / Restraint Shown: {data['win']}
+- Next 24-Hour Plan: {data['next_24h']}
+Provide a brief, warm, grounded response that:
+1. Validates their everyday routine and self-restraint as real progress.
+2. Uses Motivational Interviewing to reinforce their autonomy and dignity.
+3. Keeps the plan simple and achievable.
+"""
+print("\nConnecting with mentor guide offline...\n")
+print(ask_local_ai([{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}]))
+clear_session_dict(data)
+print("\n[Normalization check-in wiped from RAM.]\n")
 def run_focus_sprint(minutes: int = 10):
-    total_seconds = minutes * 60
-    print(f"\n--- {minutes}-Minute Deep Focus Sprint ---")
-    print("Keep your attention strictly on the task in front of you. Press Ctrl+C to finish early.\n")
-
-    try:
-        for remaining in range(total_seconds, 0, -1):
-            mins, secs = divmod(remaining, 60)
-            print(f"\rTime remaining: {mins:02d}:{secs:02d} | Stay engaged with your task...", end="", flush=True)
-            time.sleep(1)
-        print("\n\nSprint complete. Notice how shifting your attention changed your mental state.\n")
-    except KeyboardInterrupt:
-        print("\n\n[Focus sprint ended early.]\n")
-
-
+total_seconds = minutes * 60
+print(f"\n--- {minutes}-Minute Deep Focus Sprint ---")
+print("Keep your attention strictly on the task in front of you. Press Ctrl+C to finish early.\n")
+try:
+for remaining in range(total_seconds, 0, -1):
+mins, secs = divmod(remaining, 60)
+print(f"\rTime remaining: {mins:02d}:{secs:02d} | Stay engaged with your task...", end="", flush=True)
+time.sleep(1)
+print("\n\nSprint complete. Notice how shifting your attention changed your mental state.\n")
+except KeyboardInterrupt:
+print("\n\n[Focus sprint ended early.]\n")
 def run_productive_focus_shift():
-    print("\n--- Productive Focus-Shift & Behavioral Activation ---")
-    print("Shifting into an absorbing, constructive task occupies working memory and stops rumination.\n")
-    print("What kind of focus fits your energy right now?")
-    print("1. Hands-On & Physical (organizing, cleaning, movement, cooking)")
-    print("2. Mental & Skill-Building (coding, reading, job prep, problem-solving)")
-    print("3. Creative & Structured Planning (writing, mapping tomorrow, communication prep)")
-
-    category = input("\nSelect a category (1-3): ").strip()
-    if category not in OFFLINE_TASK_BANK:
-        category = "1"
-
-    data = {"interest": input("Optional: Any specific interest or goal right now? (or press Enter to skip): ").strip()}
-    check_external_care_boundary(data["interest"])
-    fallback_task = random.choice(OFFLINE_TASK_BANK[category])
-
-    if data["interest"]:
-        data["prompt"] = f"""
-        Act as a supportive Scandinavian peaceful-living mentor using CBT Behavioral Activation.
-        The user wants to shift their mind away from rumination, anxiety, or urges onto a productive task.
-        - Category chosen: {category} (1=Physical/Hands-on, 2=Mental/Skill-building, 3=Creative/Planning)
-        - User's specific interest/goal: {data['interest']}
-
-        Suggest ONE concrete, absorbing 10-to-15-minute task they can start immediately right where they are.
-        Explain in 2 short sentences why this task occupies working memory and builds real-world capability.
-        """
-        print("\nFinding an absorbing task offline...\n")
-        suggestion = ask_local_ai(
-            [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}],
-            fallback=f"Suggested Task: {fallback_task}"
-        )
-        print(suggestion)
-    else:
-        print(f"\nSuggested Task: {fallback_task}")
-
-    start_timer = input("\nStart a 10-minute focus sprint timer for this task now? (y/n): ").strip().lower()
-    if start_timer == "y":
-        run_focus_sprint(minutes=10)
-
-    clear_session_dict(data)
-    print("[Focus-shift session wiped from RAM.]\n")
-
-
+print("\n--- Productive Focus-Shift & Behavioral Activation ---")
+print("Shifting into an absorbing, constructive task occupies working memory and stops rumination.\n")
+print("What kind of focus fits your energy right now?")
+print("1. Hands-On & Physical (organizing, cleaning, movement, cooking)")
+print("2. Mental & Skill-Building (coding, reading, job prep, problem-solving)")
+print("3. Creative & Structured Planning (writing, mapping tomorrow, communication prep)")
+category = input("\nSelect a category (1-3): ").strip()
+if category not in OFFLINE_TASK_BANK:
+category = "1"
+data = {"interest": input("Optional: Any specific interest or goal right now? (or press Enter to skip): ").strip()}
+check_external_care_boundary(data["interest"])
+fallback_task = random.choice(OFFLINE_TASK_BANK[category])
+if data["interest"]:
+data["prompt"] = f"""
+Act as a supportive Scandinavian peaceful-living mentor using CBT Behavioral Activation.
+The user wants to shift their mind away from rumination, anxiety, or urges onto a productive task.
+- Category chosen: {category} (1=Physical/Hands-on, 2=Mental/Skill-building, 3=Creative/Planning)
+- User's specific interest/goal: {data['interest']}
+Suggest ONE concrete, absorbing 10-to-15-minute task they can start immediately right where they are.
+Explain in 2 short sentences why this task occupies working memory and builds real-world capability.
+"""
+print("\nFinding an absorbing task offline...\n")
+suggestion = ask_local_ai(
+[{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": data["prompt"]}],
+fallback=f"Suggested Task: {fallback_task}"
+)
+print(suggestion)
+else:
+print(f"\nSuggested Task: {fallback_task}")
+start_timer = input("\nStart a 10-minute focus sprint timer for this task now? (y/n): ").strip().lower()
+if start_timer == "y":
+run_focus_sprint(minutes=10)
+clear_session_dict(data)
+print("[Focus-shift session wiped from RAM.]\n")
 def run_norway_import_bridge():
-    print("\n--- Norway 'Import Model' Community & Service Bridge ---")
-    print("Norway's model avoids isolated silos by bringing normal community healthcare,")
+print("\n--- Norway 'Import Model' Community & Service Bridge ---")
+print("Norway's model avoids isolated silos by bringing normal community healthcare,")
 print("employment, education, and housing services directly to the individual.")
 print("Prepare a calm, practical 'Warm Handoff' with a real-world resource.\n")
 print("Which community pillar do you want to connect with next?")
@@ -722,4 +670,4 @@ else:
 print("\nPlease enter a number between 1 and 14.\n")
 if name == "main":
 app = PeacefulLivingApp()
-app.main_menu()   
+app.main_menu()
