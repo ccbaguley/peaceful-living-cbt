@@ -1,18 +1,10 @@
 name: Privacy & Syntax Audit
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [push, pull_request]
 
 jobs:
   audit:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Run Privacy & Syntax Audit
-        run: python3 audit_privacy.py
+      - run: python3 audit_privacy.py
