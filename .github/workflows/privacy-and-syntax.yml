@@ -6,7 +6,7 @@ jobs:
   audit:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Check Python Syntax
         run: python3 -m py_compile app.py
       - name: Check Zero Disk Writes
